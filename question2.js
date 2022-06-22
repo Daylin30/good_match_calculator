@@ -4,11 +4,12 @@ var startTime = performance.now()
 
 const fs = require("fs");
 const readline = require("readline");
-const stream = fs.createReadStream("./data2.csv");
+const stream = fs.createReadStream("./data.csv");
 const rl = readline.createInterface({ input: stream });
 let data = [];
  
 rl.on("line", (row) => {
+
     data.push(row.split(","));
 });
  
@@ -18,28 +19,29 @@ let list_data=[]
 let male_data = [];
 let female_data = [];
 
+let error_list = [];
 
-// sort function to sort by the highest percentage
-function sortFunction(a, b) {
-
-
-    if (a[2] === b[2]  ) {
-
-        return 0;
-    }
-    else {
-
-        return (a[2] > b[2]) ? -1 : 1;
-    }
-}
 
 rl.on("close", () => {
+
+
 
     list_data=data;
 
 
     for(let i = 0; i < list_data.length; i++){
 
+
+        
+        if (String(list_data[i][1])!='f' )
+        {
+            if (String(list_data[i][1])!='m' )
+        {
+
+            
+            error_list.push(list_data[i]);
+        }
+        }
 
         if (list_data[i][1]==='f')
         {
@@ -73,7 +75,6 @@ rl.on("close", () => {
 
     }
 
-    let final_name1=""
     var items=[]
     
     for(let i = 0; i < male_data.length; i++){
@@ -83,42 +84,25 @@ rl.on("close", () => {
 
             const final_name=(male_data[i]+"Matches"+female_data[j]).toLowerCase()
             
-            function findUnique(str){
-                // The variable that contains the unique values
-                let uniq = "";
-                 
-                for(let i = 0; i < str.length; i++){
-                  // Checking if the uniq contains the character
-                  if(uniq.includes(str[i]) === false){
-                    // If the character not present in uniq
-                    // Concatenate the character with uniq
-                    uniq += str[i]
-                  }
-                }
-                return uniq;
-              }
-               
-              const uni_name=findUnique(final_name)
-            
-            
-              let array2 = (final_name.toLowerCase()).split('');
+          
+              let array_name = (final_name.toLowerCase()).split('');
           
             
                 var array_check = [];
-                var values = [];
-                var all_values = "";
+
+                var all_values = ""; // hold all values 
             
-              for(let i = 0; i < array2.length; i++){
+              for(let i = 0; i < array_name.length; i++){
             
-                const isInArray = array_check.includes(array2[i]);
+                const isInArray = array_check.includes(array_name[i]);
             
                 if (isInArray===false)
                 {
             
                 
-                    array_check.push(array2[i])
-                    values.push(final_name.split(array2[i]).length - 1)
-                    all_values+=(final_name.split(array2[i]).length - 1)
+                    array_check.push(array_name[i])
+
+                    all_values+=(final_name.split(array_name[i]).length - 1)
                 }
               
                 
@@ -131,14 +115,14 @@ rl.on("close", () => {
             function sum(num) {
               var numString = num.toString();
               var newString = "";
-              while (numString.length > 1) { // (1)
-                newString += (parseInt(numString[0]) + parseInt(numString[numString.length - 1])).toString(); // (2)
+              while (numString.length > 1) { // need to add left to right - while loop to check if the length is >1 or else break the loop
+                newString += (parseInt(numString[0]) + parseInt(numString[numString.length - 1])).toString(); // get first and last digit in int
                 numString = numString.substring(1, numString.length - 1); // (3)
               }
-              newString += numString; // (4)
+              newString += numString; // add the remaining digit from the numstring which comes from the while loop
             
-              if (newString.length > 2) { // (5)
-                //console.log(newString)
+              if (newString.length > 2) { // we must check if length is < 2 or else run again till its < 2
+
                 return sum(newString);
               } else {
                 return newString;
@@ -146,32 +130,8 @@ rl.on("close", () => {
             }
             
             
-       
-
-
-  
-            // Data which will write in a file.
-           // let text = String(male_data[i])+" Matches "+String(female_data[j]) + " ";
-
-           // Write data in 'Output.txt' .
-           
+            // hold all the data so we can sort at the last step 
             items.push([male_data[i],female_data[j],sum(all_values) ]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -179,36 +139,35 @@ rl.on("close", () => {
     
     }
 
-    //console.log("Items");
-    //console.log(items);
-    items.sort(sortFunction);
-
-    console.log("Items Sorted");
-    console.log(items);
 
 
-    for(let i = 0; i < items.length; i++){
+    let names_scores=""
 
-        final_name1+=items[i][0] +" Matches " + items[i][1]+" " + items[i][2] +"%\n"
+    const sorted_order = items.sort(
+        (nameA, nameB) =>
+        nameB[2] - nameA[2] ||
+          nameA[0].localeCompare(nameB[0]),
+      )
+      
+      
 
+    for(let i = 0; i < sorted_order.length; i++){
+        names_scores+=items[i][0] +" Matches " + items[i][1]+" " + items[i][2] +"%\n"
     }
         
 
-
-    console.log("Final Names");
-    console.log(final_name1);
     const fs = require('fs')
 
-    fs.writeFile('Output.txt', final_name1, (err) => {
+    fs.writeFile('output.txt', names_scores, (err) => {
                   
         // In case of a error throw err.
         if (err) throw err;
     })
 
     var endTime = performance.now()
-console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 
-fs.writeFile('logs.txt', "Execution Time: "+String(endTime - startTime), (err) => {
+    
+fs.writeFile('logs.txt', "Execution Time: "+String(endTime - startTime)+"\n\nError with Gender: "+error_list, (err) => {
                   
     // In case of a error throw err.
     if (err) throw err;
