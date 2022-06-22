@@ -1,0 +1,119 @@
+const prompt = require('prompt-sync')();
+
+const name1 = prompt('What is the First name?');
+
+const name2 = prompt('What is the Second Name?');
+
+
+
+
+//okay we got both names as inputs
+
+const final_name=(name1+"Matches"+name2).toLowerCase()
+//console.log(final_name);
+
+function findUnique(str){
+    // The variable that contains the unique values
+    let uniq = "";
+     
+    for(let i = 0; i < str.length; i++){
+      // Checking if the uniq contains the character
+      if(uniq.includes(str[i]) === false){
+        // If the character not present in uniq
+        // Concatenate the character with uniq
+        uniq += str[i]
+      }
+    }
+    return uniq;
+  }
+   
+  //console.log(findUnique(final_name))
+  const uni_name=findUnique(final_name)
+
+
+  let array2 = (final_name.toLowerCase()).split('');
+
+  //console.log(final_name)
+  //console.log(array2)
+
+
+    var array_check = [];
+    var values = [];
+    var all_values = "";
+
+  for(let i = 0; i < array2.length; i++){
+
+    const isInArray = array_check.includes(array2[i]);
+
+    if (isInArray===false)
+    {
+
+        //console.log(array2[i]);
+
+        //console.log(final_name.split(array2[i]).length - 1);
+        array_check.push(array2[i])
+        values.push(final_name.split(array2[i]).length - 1)
+        all_values+=(final_name.split(array2[i]).length - 1)
+    }
+  
+    
+    
+
+  }
+ 
+
+
+
+function sum(num) {
+  var numString = num.toString();
+  var newString = "";
+  while (numString.length > 1) { // (1)
+    newString += (parseInt(numString[0]) + parseInt(numString[numString.length - 1])).toString(); // (2)
+    numString = numString.substring(1, numString.length - 1); // (3)
+  }
+  newString += numString; // (4)
+
+  if (newString.length > 2) { // (5)
+    //console.log(newString)
+    return sum(newString);
+  } else {
+    return newString;
+  }
+}
+
+//console.log("The SUM");
+//console.log(all_values);
+
+//console.log(sum(all_values));
+
+var output_string = "";
+output_string+=name1+" Matches "+ name2+" "+sum(all_values) +"%"
+
+if (sum(all_values)>80){
+  output_string+=", Good Match";
+  
+
+}
+  console.log("")
+
+var status=true;
+if (name1 === "") {
+  //console.log("First Name is Null or Empty")
+  status=false;
+}
+
+if (name2 === "") {
+  //console.log("Second Name is Null or Empty")
+  status=false;
+}
+
+if (status==true){
+  console.log((output_string));
+
+}
+else{
+  console.log("Name/s Contain a Null/Empty Value")
+
+}
+
+// we can check if length of string is <=2
