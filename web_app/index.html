@@ -15,50 +15,25 @@ nametwo = (document.getElementById("second").value); // get second name
 
 const final_name=(nameone+"Matches"+nametwo).toLowerCase() //add names together
 
-
-// lets find the unique values in names
-function findUnique(str){
-    // The variable that contains the unique values
-    let uniq = "";
-     
-    for(let i = 0; i < str.length; i++){
-      // Checking if the uniq contains the character
-      if(uniq.includes(str[i]) === false){
-        // If the character not present in uniq
-        // Concatenate the character with uniq
-        uniq += str[i]
-      }
-    }
-    return uniq;
-  }
-   
-  // holds the unique charcters from the name
-  const uni_name=findUnique(final_name)
-
-
-// do I need this or can i remove ? test 
-  let array2 = (final_name.toLowerCase()).split('');
+  let array_name = (final_name.toLowerCase()).split('');
 
 
 
     var array_check = [];
-    var values = [];
+
     var all_values = "";
 
     // lets loop through the final name jack matches jill example
-  for(let i = 0; i < array2.length; i++){
+  for(let i = 0; i < array_name.length; i++){
 
-    const isInArray = array_check.includes(array2[i]); // lets check if it exists in our list or not
+    const isInArray = array_check.includes(array_name[i]); // lets check if it exists in our list or not
 
     if (isInArray===false)
     {
 
-        //console.log(array2[i]);
+        array_check.push(array_name[i])
 
-        //console.log(final_name.split(array2[i]).length - 1);
-        array_check.push(array2[i])
-        values.push(final_name.split(array2[i]).length - 1)
-        all_values+=(final_name.split(array2[i]).length - 1)
+        all_values+=(final_name.split(array_name[i]).length - 1)
     }
   
     
