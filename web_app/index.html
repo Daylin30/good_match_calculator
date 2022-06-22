@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script>
+
+
+function add()
+{
+
+nameone = (document.getElementById("first").value); // get first name
+nametwo = (document.getElementById("second").value); // get second name
+
+
+const final_name=(nameone+"Matches"+nametwo).toLowerCase() //add names together
+
+
+// lets find the unique values in names
+function findUnique(str){
+    // The variable that contains the unique values
+    let uniq = "";
+     
+    for(let i = 0; i < str.length; i++){
+      // Checking if the uniq contains the character
+      if(uniq.includes(str[i]) === false){
+        // If the character not present in uniq
+        // Concatenate the character with uniq
+        uniq += str[i]
+      }
+    }
+    return uniq;
+  }
+   
+  // holds the unique charcters from the name
+  const uni_name=findUnique(final_name)
+
+
+// do I need this or can i remove ? test 
+  let array2 = (final_name.toLowerCase()).split('');
+
+
+
+    var array_check = [];
+    var values = [];
+    var all_values = "";
+
+    // lets loop through the final name jack matches jill example
+  for(let i = 0; i < array2.length; i++){
+
+    const isInArray = array_check.includes(array2[i]); // lets check if it exists in our list or not
+
+    if (isInArray===false)
+    {
+
+        //console.log(array2[i]);
+
+        //console.log(final_name.split(array2[i]).length - 1);
+        array_check.push(array2[i])
+        values.push(final_name.split(array2[i]).length - 1)
+        all_values+=(final_name.split(array2[i]).length - 1)
+    }
+  
+    
+    
+
+  }
+ 
+
+
+// function to add numbers from left to right until 2 digits are left
+function sum(num) {
+  var numString = num.toString();
+  var newString = "";
+
+  // lets check if the length is more than 1 - we need to reach 1 or less 
+  while (numString.length > 1) {
+
+    // ok lets add first and last number to the string
+    newString += (parseInt(numString[0]) + parseInt(numString[numString.length - 1])).toString();
+
+    // we need to now remove the numbers we used from left and right position
+    numString = numString.substring(1, numString.length - 1); 
+  }
+
+  // so numstring will exit the while with less than 1 value and now we add that to the new string 
+  newString += numString; 
+
+//if more than 2 digits left , then run again till its <=2 digits
+  if (newString.length > 2) { 
+
+    return sum(newString);
+  } else {
+    return newString;
+  }
+}
+
+
+
+
+
+// a user cannot enter a blank name , so lets add checks for that 
+
+var status=true;
+if (nameone === "") {
+  //console.log("First Name is Null or Empty")
+  status=false;
+}
+
+if (nametwo === "") {
+  //console.log("Second Name is Null or Empty")
+  status=false;
+}
+
+if (status!=true)
+    {
+
+        document.getElementById("answer").value ="Name/s Contain a Null/Empty Value"
+
+    }
+else
+    {
+
+
+
+
+    var final_answer="";
+
+    final_answer+=String(nameone)+" Matches " + String (nametwo)+" "; 
+    final_answer+=String(sum(all_values))+" %";
+
+    // we need to say good match if >=80%
+    if (sum(all_values) >= 80) { 
+
+        final_answer+=" , Good Match"
+
+    }
+
+    //document.getElementById("answer").value = String(sum(all_values))+" %";
+    document.getElementById("answer").value = final_answer;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</head>
+
+
+
+<body>
+
+    <div class="wrapper">
+        <div class="container">
+
+            <h2>Good Match Calculator</h2> <br>
+             <input id="first" placeholder="Enter First Name"> 
+             <br>
+
+             <h2>Matches</h2>
+             <br>
+
+              <input id="second" placeholder="Enter Second Name">
+              <br>
+            <button onclick="add()">Calculate</button>
+            <br>
+            <br>
+
+           <center>    <input id="answer" disabled style="width:400px; text-align: center;" >   </center>    
+          
+        </div>
+    </div>
+
+    
+</body>
+
+
+
+
+
+
+
+</html>
+
+
+<style>*{
+  padding: 0;
+  margin: 0;
+}
+
+body{
+  background-image: url("background.jpg");
+  background-size: cover;
+  width: 100%;
+}
+
+.wrapper{
+  padding-top: 7%;
+}
+.container{
+  
+  margin-left: auto;
+  margin-right: auto;
+
+  text-align: center;
+  padding: 10px 10px;
+  background-color: white;
+  width: 30%;
+  border-radius:10px ;
+  border: black 1px solid;
+   
+  
+  
+}
+h2{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 30px;
+  
+   
+}
+
+input{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 30px;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  cursor: pointer;
+  padding-top: 10px;
+}
+
+button {
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50; /* Green */
+  transition-duration: 0.4s;
+  width: 150px;
+  border-radius: 8px;
+  height: 35px;
+  cursor: pointer;
+  padding: 10px 10px;
+  font-size: 16px;
+}
+
+ button:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+label{
+    color: gray;
+    padding-top: 20px;
+    display: block;
+}
+
+.label2{
+  color: gray;
+    padding-bottom: 10px;
+    display: block;
+}
+
+
+  </style>
